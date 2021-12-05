@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import * as bcrypt from 'bcrypt';
 import { col, fn, where } from 'sequelize/dist';
 import { BcryptService } from 'src/bcrypt.service';
-import { BCRYPT_CONSTANT } from 'src/constants';
 import { User } from 'src/entities';
 import { v4 as uuid } from 'uuid';
 import { CreateUserInput } from '../auth/dto/create-user-input.dto';
@@ -27,6 +25,14 @@ export class UsersService {
     return this.userModel.findOne({
       where: {
         username: where(fn('lower', col('username')), username.toLowerCase()),
+      },
+    });
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    return this.userModel.findOne({
+      where: {
+        email: where(fn('lower', col('email')), email.toLowerCase()),
       },
     });
   }

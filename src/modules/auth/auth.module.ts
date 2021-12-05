@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { BcryptService } from 'src/bcrypt.service';
 import { JWT_TOKEN } from 'src/constants';
 import { UsersModule } from '../users/users.module';
 import { JWTStrategy } from './strategy/jwt.strategy';
