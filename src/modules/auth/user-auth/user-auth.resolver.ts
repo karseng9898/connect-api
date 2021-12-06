@@ -27,4 +27,11 @@ export class UserAuthResolver {
   ): Promise<User> {
     return this.usersService.register(createUserInput);
   }
+
+  @Mutation(() => LoginResponse)
+  tokenRefresh(
+    @Args('refresh_token') refresh_token: string,
+  ): Promise<LoginResponse> {
+    return this.userAuthService.tokenRefresh(refresh_token);
+  }
 }

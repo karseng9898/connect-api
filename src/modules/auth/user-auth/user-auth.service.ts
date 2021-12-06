@@ -45,8 +45,28 @@ export class UserAuthService {
         });
         const access_token = this.jwtService.sign(payload);
         await this.usersService.updateRefreshToken(user.id, refresh_token);
-        console.log('test', this.jwtService.verify(access_token));
 
+        resolve({ access_token, refresh_token });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  async tokenRefresh(refreshToken: string): Promise<LoginResponse> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const payload = this.jwtService.verify(refreshToken);
+        const { username, sub: id } = payload;
+        const access_token = this.jwtService.sign({ username, sub: id });
+        const refresh_token = this.jwtService.sign(
+          { username, sub: id },
+          {
+            secret: JWT_TOKEN.secret,
+            expiresIn: '1w',
+          },
+        );
+        await this.usersService.updateRefreshToken(id, refresh_token);
         resolve({ access_token, refresh_token });
       } catch (e) {
         reject(e);

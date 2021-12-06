@@ -30,6 +30,7 @@ type Query {
 type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
   register(createUserInput: CreateUserInput!): User!
+  tokenRefresh(refresh_token: String!): LoginResponse!
 }
 
 input LoginUserInput {

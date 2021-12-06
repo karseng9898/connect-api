@@ -12,6 +12,7 @@ export class UsersResolver {
   @Query(() => User)
   @UseGuards(JwtAuthGuard)
   getMe(@CurrentUser() user: User): Promise<User> {
+    console.log(user);
     return this.usersService.findOne(user.id);
   }
 

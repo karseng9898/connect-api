@@ -13,7 +13,7 @@ import { UserAuthService } from './user-auth/user-auth.service';
     UsersModule,
     JwtModule.register({
       secret: JWT_TOKEN.secret,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '3d' },
     }),
     PassportModule,
   ],
