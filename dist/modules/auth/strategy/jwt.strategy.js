@@ -17,7 +17,9 @@ const constants_1 = require("../../../constants");
 let JWTStrategy = class JWTStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor() {
         super({
-            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromExtractors([
+                (request) => request.body.access_token,
+            ]),
             secretOrKey: constants_1.JWT_TOKEN.secret,
             ignoreExpiration: false,
         });
