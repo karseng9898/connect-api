@@ -8,6 +8,7 @@ export declare class UsersService {
     findAll(): Promise<User[]>;
     findOne(id: string): Promise<User>;
     findbyUsername(username: string): Promise<User>;
+    findByEmail(email: string): Promise<User>;
     updateRefreshToken(id: string, refreshToken: string): Promise<void>;
     register(createUserInput: CreateUserInput): Promise<User>;
 }

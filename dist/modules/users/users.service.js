@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
 const dist_1 = require("sequelize/dist");
 const bcrypt_service_1 = require("../../bcrypt.service");
-const constants_1 = require("../../constants");
 const entities_1 = require("../../entities");
 const uuid_1 = require("uuid");
 let UsersService = class UsersService {
@@ -35,6 +34,13 @@ let UsersService = class UsersService {
         return this.userModel.findOne({
             where: {
                 username: (0, dist_1.where)((0, dist_1.fn)('lower', (0, dist_1.col)('username')), username.toLowerCase()),
+            },
+        });
+    }
+    async findByEmail(email) {
+        return this.userModel.findOne({
+            where: {
+                email: (0, dist_1.where)((0, dist_1.fn)('lower', (0, dist_1.col)('email')), email.toLowerCase()),
             },
         });
     }
