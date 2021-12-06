@@ -10,7 +10,6 @@ exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
-const bcrypt_service_1 = require("../../bcrypt.service");
 const constants_1 = require("../../constants");
 const users_module_1 = require("../users/users.module");
 const jwt_strategy_1 = require("./strategy/jwt.strategy");

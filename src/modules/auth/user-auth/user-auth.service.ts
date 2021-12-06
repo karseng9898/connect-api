@@ -45,6 +45,7 @@ export class UserAuthService {
         });
         const access_token = this.jwtService.sign(payload);
         await this.usersService.updateRefreshToken(user.id, refresh_token);
+        console.log('test', this.jwtService.verify(access_token));
 
         resolve({ access_token, refresh_token });
       } catch (e) {

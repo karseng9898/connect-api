@@ -12,8 +12,6 @@ const config_1 = require("@nestjs/config");
 const graphql_1 = require("@nestjs/graphql");
 const sequelize_1 = require("@nestjs/sequelize");
 const path_1 = require("path");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
 const entities_1 = require("./entities");
 const auth_module_1 = require("./modules/auth/auth.module");
 const users_module_1 = require("./modules/users/users.module");
@@ -23,7 +21,6 @@ AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({
-                envFilePath: ['.env'],
                 isGlobal: true,
             }),
             sequelize_1.SequelizeModule.forRoot({
@@ -39,13 +36,10 @@ AppModule = __decorate([
             }),
             graphql_1.GraphQLModule.forRoot({
                 autoSchemaFile: (0, path_1.join)(process.cwd(), 'src/schema.gql'),
-                context: ({ req }) => ({ authorization: req.headers.authorization }),
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
     })
 ], AppModule);
 exports.AppModule = AppModule;
