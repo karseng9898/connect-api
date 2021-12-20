@@ -24,7 +24,7 @@ type LoginResponse {
 type Query {
   getMe: User!
   users: [User!]!
-  user(username: String!): User!
+  user(username: String!): User
 }
 
 type Mutation {

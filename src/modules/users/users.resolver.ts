@@ -22,7 +22,7 @@ export class UsersResolver {
     return this.usersService.findAll();
   }
 
-  @Query(() => User)
+  @Query(() => User, { nullable: true })
   @UseGuards(JwtAuthGuard)
   user(@Args('username') username: string): Promise<User> {
     return this.usersService.findbyUsername(username);
