@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import * as fs from 'fs';
+import { FileUpload } from 'graphql-upload';
 import { col, fn, where } from 'sequelize/dist';
 import { BcryptService } from 'src/bcrypt.service';
 import { User } from 'src/entities';
+import { finished } from 'stream/promises';
 import { v4 as uuid } from 'uuid';
 import { CreateUserInput } from '../auth/dto/create-user-input.dto';
+import { AvatarUploadResponse } from './dto/avatar-upload-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -60,5 +64,41 @@ export class UsersService {
       }
       throw new Error(e);
     }
+  }
+
+  updateMe(
+    user: User,
+    name: string,
+    thumbnail: FileUpload | null,
+  ): Promise<AvatarUploadResponse> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let url = '';
+        if (thumbnail) {
+          const { filename, createReadStream } = thumbnail;
+          const randomId = uuid();
+          const stream = createReadStream();
+          const pathName = `./public/images/avatar/${randomId}-${filename}`;
+
+          console.log(pathName);
+          const out = fs.createWriteStream(pathName);
+
+          stream.pipe(out);
+          await finished(out);
+
+          url = `http://localhost:3000/images/avatar/${randomId}-${filename}`;
+          await this.userModel.update(
+            { avatar: url, name },
+            { where: { id: user.id } },
+          );
+        } else {
+          await this.userModel.update({ name }, { where: { id: user.id } });
+        }
+
+        resolve({ url });
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 }

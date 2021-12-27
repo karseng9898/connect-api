@@ -33,4 +33,8 @@ export class User extends Model {
 
   @Column({ allowNull: true })
   refreshToken?: string;
+
+  @Column({ allowNull: true })
+  @Field(() => String, { nullable: true })
+  avatar?: string;
 }
