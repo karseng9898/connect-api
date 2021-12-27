@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { User } from './entities';
 import { AuthModule } from './modules/auth/auth.module';
@@ -25,6 +26,9 @@ import { UsersModule } from './modules/users/users.module';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
     UsersModule,
     AuthModule,
