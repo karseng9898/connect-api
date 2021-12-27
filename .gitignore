@@ -2,3 +2,5 @@
 /dist
 #environment variables
 .env
+
+/public/images
