@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type User {
-  id: String!
+  id: Float!
   username: String!
   email: String!
   name: String!
@@ -17,6 +17,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Friend {
+  id: Float!
+  senderId: Float!
+  receiverId: Float!
+  status: Boolean!
+  createdAt: DateTime!
+}
+
 type AvatarUploadResponse {
   url: String
 }
@@ -28,8 +36,13 @@ type LoginResponse {
 
 type Query {
   getMe: User!
+  getUserById(id: Int!): User!
   users: [User!]!
   user(username: String!): User
+  checkFriendStatus(friendId: Int!): Friend
+  friends: [User!]!
+  friendRequests: [Friend!]!
+  friend(id: Int!): Friend!
 }
 
 type Mutation {
@@ -37,6 +50,9 @@ type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
   register(createUserInput: CreateUserInput!): User!
   tokenRefresh(refresh_token: String!): LoginResponse!
+  addFriend(receiverId: Int!): Friend!
+  acceptFriend(friendId: Int!): Boolean!
+  unfriend(friendId: Int!): Boolean!
 }
 
 """The `Upload` scalar type represents a file upload."""

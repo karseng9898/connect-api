@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/entities';
@@ -14,8 +14,13 @@ export class UsersResolver {
   @Query(() => User)
   @UseGuards(JwtAuthGuard)
   getMe(@CurrentUser() user: User): Promise<User> {
-    console.log(user);
     return this.usersService.findOne(user.id);
+  }
+
+  @Query(() => User)
+  @UseGuards(JwtAuthGuard)
+  getUserById(@Args('id', { type: () => Int }) id: number): Promise<User> {
+    return this.usersService.findOne(id);
   }
 
   @Query(() => [User])

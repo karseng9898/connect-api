@@ -21,7 +21,7 @@ export class UsersService {
     return this.userModel.findAll();
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: number): Promise<User> {
     return this.userModel.findOne({ where: { id } });
   }
 
@@ -41,7 +41,7 @@ export class UsersService {
     });
   }
 
-  async updateRefreshToken(id: string, refreshToken: string): Promise<void> {
+  async updateRefreshToken(id: number, refreshToken: string): Promise<void> {
     this.userModel.update({ refreshToken }, { where: { id } });
   }
 
@@ -52,7 +52,6 @@ export class UsersService {
       );
 
       const user = await this.userModel.create({
-        id: uuid(),
         ...createUserInput,
         password: hashedPassword,
       });

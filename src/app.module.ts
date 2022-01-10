@@ -4,9 +4,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { User } from './entities';
+import { Friend, User } from './entities';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { FriendsModule } from './modules/friends/friends.module';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { UsersModule } from './modules/users/users.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      models: [User],
+      models: [User, Friend],
       autoLoadModels: true,
       synchronize: true,
     }),
@@ -32,6 +33,7 @@ import { UsersModule } from './modules/users/users.module';
     }),
     UsersModule,
     AuthModule,
+    FriendsModule,
   ],
 })
 export class AppModule {}

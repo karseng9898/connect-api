@@ -1,12 +1,21 @@
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
-import { Column, Model, Table } from 'sequelize-typescript';
+import {
+  AutoIncrement,
+  Column,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+  Unique,
+} from 'sequelize-typescript';
+import { Friend } from '.';
 
 @Table({ tableName: 'users' })
 @ObjectType()
 export class User extends Model {
-  @Column({ primaryKey: true })
+  @Column({ primaryKey: true, autoIncrement: true })
   @Field()
-  id: string;
+  id: number;
 
   @Column({ unique: true })
   @Field()
@@ -37,4 +46,7 @@ export class User extends Model {
   @Column({ allowNull: true })
   @Field(() => String, { nullable: true })
   avatar?: string;
+
+  @HasMany(() => Friend)
+  friends: Friend[];
 }
