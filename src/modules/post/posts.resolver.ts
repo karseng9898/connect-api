@@ -3,7 +3,6 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { Post, User } from 'src/entities';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { TotalUserResponse } from '../users/dto/total-user-response';
 import { PostResponse } from './dto/post-response';
 import { PostService } from './posts.service';
 
@@ -45,26 +44,4 @@ export class PostResolver {
   reportedPosts(): Promise<Post[]> {
     return this.postService.findAllReportedPost();
   }
-
-  // @Mutation(() => Message, { name: 'sendMessage' })
-  // @UseGuards(JwtAuthGuard)
-  // sendMessage(
-  //   @CurrentUser() user: User,
-  //   @Args('receiverId', { type: () => Int }) receiverId: number,
-  //   @Args('content') content: string,
-  // ): Promise<Message> {
-  //   return this.messageService.create(user.id, receiverId, content);
-  // }
-
-  // @Query(() => [ChatResponse], { name: 'chats', nullable: true })
-  // @UseGuards(JwtAuthGuard)
-  // findAllChats(@CurrentUser() user: User) {
-  //   return this.messageService.findAllChat(user.id);
-  // }
-
-  // @Query(() => [Message], { name: 'messages' })
-  // @UseGuards(JwtAuthGuard)
-  // findAll(@CurrentUser() user: User, @Args('friendId') friendId: number) {
-  //   return this.messageService.findAll(user.id, friendId);
-  // }
 }
