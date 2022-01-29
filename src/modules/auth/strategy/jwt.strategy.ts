@@ -17,6 +17,8 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     return {
       id: payload.sub,
       username: payload.username,
+      name: payload.name,
+      avatar: payload.avatar,
     };
   }
 }

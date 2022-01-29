@@ -4,10 +4,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { Friend, User } from './entities';
+import { Friend, Message, User } from './entities';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { FriendsModule } from './modules/friends/friends.module';
+import { EventsModule } from './modules/events/events.module';
+import { MessageModule } from './modules/messages/messages.module';
+import { PostModule } from './modules/post/posts.module';
 
 @Module({
   imports: [
@@ -21,7 +24,7 @@ import { FriendsModule } from './modules/friends/friends.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      models: [User, Friend],
+      models: [User, Friend, Message],
       autoLoadModels: true,
       synchronize: true,
     }),
@@ -34,6 +37,9 @@ import { FriendsModule } from './modules/friends/friends.module';
     UsersModule,
     AuthModule,
     FriendsModule,
+    EventsModule,
+    MessageModule,
+    PostModule,
   ],
 })
 export class AppModule {}

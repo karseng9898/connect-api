@@ -9,6 +9,7 @@ import { finished } from 'stream/promises';
 import { v4 as uuid } from 'uuid';
 import { CreateUserInput } from '../auth/dto/create-user-input.dto';
 import { AvatarUploadResponse } from './dto/avatar-upload-response.dto';
+import { TotalUserResponse } from './dto/total-user-response';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,11 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return this.userModel.findAll();
+  }
+
+  async getTotalUserCount(): Promise<TotalUserResponse> {
+    const users = await this.userModel.findAll({});
+    return { totalCount: users.length };
   }
 
   async findOne(id: number): Promise<User> {
@@ -39,10 +45,6 @@ export class UsersService {
         email: where(fn('lower', col('email')), email.toLowerCase()),
       },
     });
-  }
-
-  async updateRefreshToken(id: number, refreshToken: string): Promise<void> {
-    this.userModel.update({ refreshToken }, { where: { id } });
   }
 
   async register(createUserInput: CreateUserInput): Promise<User> {

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Friend, User } from 'src/entities';
 import { UsersService } from '../users/users.service';
+import { FriendsResponse } from './dto/friends-response';
 
 @Injectable()
 export class FriendsService {
@@ -28,7 +29,7 @@ export class FriendsService {
     return friend;
   }
 
-  async findAll(userId: number): Promise<User[]> {
+  async findAll(userId: number): Promise<FriendsResponse[]> {
     try {
       const friends = await this.friendModel.findAll({
         where: {
@@ -39,16 +40,16 @@ export class FriendsService {
         },
       });
 
-      const users = friends.map((friend) => {
+      const users = friends.map(async (friend) => {
         const senderId = friend.senderId;
         const receiverId = friend.receiverId;
 
         if (senderId === userId) {
-          const user = this.usersService.findOne(receiverId);
-          return user;
+          const user = await this.usersService.findOne(receiverId);
+          return { user, friendId: friend.id };
         }
-        const user = this.usersService.findOne(senderId);
-        return user;
+        const user = await this.usersService.findOne(senderId);
+        return { user, friendId: friend.id };
       });
 
       return Promise.all(users);
@@ -85,6 +86,33 @@ export class FriendsService {
         {
           where: {
             [Op.and]: [{ senderId: friendId }, { receiverId: userId }],
+          },
+        },
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async updateLastMessage(
+    senderId: number,
+    receiverId: number,
+    messageId: number,
+  ): Promise<boolean> {
+    try {
+      await this.friendModel.update(
+        { lastMessage: messageId },
+        {
+          where: {
+            [Op.or]: [
+              {
+                [Op.and]: [{ senderId: receiverId }, { receiverId: senderId }],
+              },
+              {
+                [Op.and]: [{ senderId }, { receiverId }],
+              },
+            ],
           },
         },
       );

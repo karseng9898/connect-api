@@ -3,6 +3,7 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { Friend, User } from 'src/entities';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { FriendsResponse } from './dto/friends-response';
 import { FriendsService } from './friends.service';
 
 @Resolver(() => Friend)
@@ -30,13 +31,13 @@ export class FriendsResolver {
     return this.friendsService.checkStatus(user.id, friendId);
   }
 
-  @Query(() => [User], { name: 'friends' })
+  @Query(() => [FriendsResponse], { name: 'friends', nullable: true })
   @UseGuards(JwtAuthGuard)
-  findAll(@CurrentUser() user: User) {
+  findAll(@CurrentUser() user: User): Promise<FriendsResponse[]> {
     return this.friendsService.findAll(user.id);
   }
 
-  @Query(() => [Friend], { name: 'friendRequests' })
+  @Query(() => [Friend], { name: 'friendRequests', nullable: true })
   @UseGuards(JwtAuthGuard)
   findAllRequest(@CurrentUser() user: User): Promise<Friend[]> {
     return this.friendsService.findAllRequest(user.id);

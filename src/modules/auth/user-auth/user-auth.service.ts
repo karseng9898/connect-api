@@ -37,14 +37,18 @@ export class UserAuthService {
   async login(user: User): Promise<LoginResponse> {
     return new Promise(async (resolve, reject) => {
       try {
-        const payload = { username: user.username, sub: user.id };
+        const payload = {
+          name: user.name,
+          avatar: user.avatar,
+          username: user.username,
+          sub: user.id,
+        };
 
         const refresh_token = this.jwtService.sign(payload, {
           secret: JWT_TOKEN.secret,
           expiresIn: '1w',
         });
         const access_token = this.jwtService.sign(payload);
-        await this.usersService.updateRefreshToken(user.id, refresh_token);
 
         resolve({ access_token, refresh_token });
       } catch (e) {
@@ -66,7 +70,7 @@ export class UserAuthService {
             expiresIn: '1w',
           },
         );
-        await this.usersService.updateRefreshToken(id, refresh_token);
+
         resolve({ access_token, refresh_token });
       } catch (e) {
         reject(e);

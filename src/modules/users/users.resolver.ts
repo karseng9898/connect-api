@@ -5,6 +5,7 @@ import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/entities';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AvatarUploadResponse } from './dto/avatar-upload-response.dto';
+import { TotalUserResponse } from './dto/total-user-response';
 import { UsersService } from './users.service';
 
 @Resolver()
@@ -24,7 +25,7 @@ export class UsersResolver {
   }
 
   @Query(() => [User])
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   users(): Promise<User[]> {
     return this.usersService.findAll();
   }
@@ -45,5 +46,10 @@ export class UsersResolver {
     thumbnail: FileUpload | null,
   ): Promise<AvatarUploadResponse> {
     return this.usersService.updateMe(user, name, thumbnail);
+  }
+
+  @Query(() => TotalUserResponse, { name: 'totalUser', nullable: true })
+  totalUser(): Promise<TotalUserResponse> {
+    return this.usersService.getTotalUserCount();
   }
 }

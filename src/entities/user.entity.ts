@@ -1,14 +1,6 @@
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
-import {
-  AutoIncrement,
-  Column,
-  HasMany,
-  Model,
-  PrimaryKey,
-  Table,
-  Unique,
-} from 'sequelize-typescript';
-import { Friend } from '.';
+import { Column, HasMany, Model, Table } from 'sequelize-typescript';
+import { Friend, Message } from '.';
 
 @Table({ tableName: 'users' })
 @ObjectType()
@@ -49,4 +41,7 @@ export class User extends Model {
 
   @HasMany(() => Friend)
   friends: Friend[];
+
+  @HasMany(() => Message)
+  messages: Message[];
 }
